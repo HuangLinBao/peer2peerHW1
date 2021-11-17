@@ -5,20 +5,30 @@ import java.util.*;
 import java.io.*;
 
 
-import com.jfoenix.controls.JFXTextArea;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import com.jfoenix.controls.*;
+import javafx.event.*;
+import javafx.fxml.*;
+import javafx.scene.control.*;
 
 public class Controller  {
     @FXML
-    private JFXTextArea shown_msgs;
+    private JFXTextArea shown_msgs,send_msg;
     StringBuilder sb = new StringBuilder();
 
 
     public void print(ActionEvent actionEvent) {
-        sb.append("khello" + "\n");
+
+
+
+
+
+        new Thread(() ->{
+
+        }).start();
+
+
+        sb.append("Ayyy: ").append(send_msg.getText()).append("\n");
         shown_msgs.setText(sb.toString());
+        send_msg.clear();
     }
 }
