@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 
-public class ClientThread extends Thread {
+public class ClientThread  {
     private  DatagramSocket clientSocket = null;//UDP socket
     private String message;
     private  InetAddress IPAddress ;//VM server IP
@@ -12,17 +12,26 @@ public class ClientThread extends Thread {
     public ClientThread (String msg,String IP) throws UnknownHostException, SocketException {
         this.message = msg;
         this.IPAddress = InetAddress.getByName(IP);
-        clientSocket = new DatagramSocket();
+        this.clientSocket = new DatagramSocket();
     }
 
 
     public void send() throws IOException {
-        String sentence = this.message;
-        byte[] sendData = new byte[1024];//packet array
+        String sentence = "\n";
+        byte[] sendData;//packet array
         sendData = sentence.getBytes();
         DatagramPacket sendPacket =
-                new DatagramPacket(sendData, sendData.length, IPAddress, 8080); //send the packet to server
-        clientSocket.send(sendPacket);
+                new DatagramPacket(sendData, sendData.length, this.IPAddress, 8080); //send the packet to server
+        this.clientSocket.send(sendPacket);
+        sentence = this.message;
+        sendData = sentence.getBytes();
+        sendPacket =
+                new DatagramPacket(sendData, sendData.length, this.IPAddress, 8080); //send the packet to server
+        this.clientSocket.send(sendPacket);
+    }
+
+    public void closeSocket() {
+        clientSocket.close();
     }
 
 //    public void receive() throws IOException {

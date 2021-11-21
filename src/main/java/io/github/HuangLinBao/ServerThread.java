@@ -3,28 +3,38 @@ import java.io.IOException;
 import java.util.*;
 import java.net.*;
 
-public class ServerThread extends Thread{
-  private  DatagramSocket serverSocket ;
-  private  InetAddress IPAddress;
-  private String receivedMsg;
-  private byte[] receiveData = new byte[1024];//packet arrays
+public class ServerThread extends Thread {
+    public String getReceivedMsg() {
+        return receivedMsg;
+    }
 
-  public ServerThread(String IP) throws UnknownHostException, SocketException {
-      this.IPAddress = InetAddress.getByName(IP);
-      this.serverSocket =new DatagramSocket();
-  }
+    private DatagramSocket serverSocket;
+    private InetAddress IPAddress;
+    private String receivedMsg;
+    private byte[] receiveData = new byte[1024];//packet arrays
 
-  @Override
-    public void run(){
-      DatagramPacket receivePacket =
-              new DatagramPacket(receiveData, receiveData.length);//UDP server receives packet
-      try {
-          serverSocket.receive(receivePacket);
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
+    public ServerThread(String IP) throws UnknownHostException, SocketException {
+        this.IPAddress = InetAddress.getByName(IP);
 
-      this.receivedMsg = new String(receivePacket.getData()).trim();
-  }
+    }
 
+    @Override
+    public void run() {
+        try {
+            this.serverSocket = new DatagramSocket(8080);
+
+            while (true) {
+                DatagramPacket receivePacket =
+                        new DatagramPacket(this.receiveData, this.receiveData.length);
+                this.serverSocket.receive(receivePacket);
+                receivedMsg = new String(receivePacket.getData()).trim();
+            }
+            //UDP server receives packet
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
